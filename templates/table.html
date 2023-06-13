@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Data Table</title>
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Data Table</h1>
+	<table>
+		<thead>
+			<tr>
+				{% for col in data.columns %}
+				<th>{{ col }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for row in data.iterrows() %}
+			<tr>
+				{% for value in row[1] %}
+				<td>{{ value }}</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% if pages > 1 %}
+	<div>
+		{% for page in range(1, pages+1) %}
+		<button onclick="window.location.href='/table?page={{ page }}&data={{ data.to_html()|urlencode }}'">{{ page }}</button>
+		{% endfor %}
+	</div>
+	{% endif %}
+	<form action="/pdf" method="POST">
+		<input type="hidden" name="data" value="{{ data.to_html() }}">
+		<input type
